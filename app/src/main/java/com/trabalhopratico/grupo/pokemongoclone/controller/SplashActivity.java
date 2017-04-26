@@ -2,30 +2,30 @@ package com.trabalhopratico.grupo.pokemongoclone.controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.WindowManager;
 
 import com.trabalhopratico.grupo.pokemongoclone.R;
 import com.trabalhopratico.grupo.pokemongoclone.util.BancoDadosSingleton;
+import com.trabalhopratico.grupo.pokemongoclone.util.MyApp;
 
 public class SplashActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("Inicializando", "Criando Splash");
+        Log.i("CICLO_DE_VIDA", "Splash Criado");
+
         setContentView(R.layout.activity_splash);
         boolean con = VerificaConexao(getBaseContext());
-        Log.i("ESTADO", "verificou conexao");
+        Log.i("PRE_VERIFICACOES", "verificou conexao");
 
         //select * from usuario where temSessao == "S"
-        Cursor c = BancoDadosSingleton.getInstance().buscar("usuario", new String[]{"login", "senha"}, "temSessao = 'S'", "");
-        Log.i("ESTADO", "verificou login");
+        VerificaSessao(BancoDadosSingleton.getInstance().buscar("usuario", new String[]{"*"}, "temSessao = 'S'", ""), this);
+
     }
 
     public static boolean VerificaConexao(Context _context){
@@ -39,5 +39,13 @@ public class SplashActivity extends Activity {
             conectado = false;
         }
         return conectado;
+    }
+
+    protected void VerificaSessao(Cursor c, Context _context){
+        if(c.getCount() == 0) {
+            Intent it = new Intent(_context, LoginActivity.class);
+            Log.i("PRE_VERIFICACOES", c.getCount() + "");
+            _context.startActivity(it);
+        }
     }
 }
