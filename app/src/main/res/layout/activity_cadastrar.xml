@@ -131,7 +131,7 @@
                         android:layout_height="67dp"
                         android:background="@drawable/buttons_border"
                         android:layout_gravity="center"
-                        android:text="Cadastrar" />
+                        android:text="Cadastrar"/>
 
                 </android.support.v7.widget.LinearLayoutCompat>
 

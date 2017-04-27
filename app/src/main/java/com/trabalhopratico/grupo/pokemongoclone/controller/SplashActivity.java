@@ -18,8 +18,8 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("CICLO_DE_VIDA", "Splash Criado");
-
         setContentView(R.layout.activity_splash);
+
         boolean con = VerificaConexao(getBaseContext());
         Log.i("PRE_VERIFICACOES", "verificou conexao");
 
