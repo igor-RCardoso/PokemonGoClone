@@ -465,8 +465,8 @@ public final class BancoDadosSingleton {
         Log.i("BANCO_DADOS", "Abriu conexao com o bd");
     }
     public long inserir(String tabelas, ContentValues valores){
-
-        return 0;
+        long id = db.insert(tabelas, null, valores);
+        return id;
     }
     public int atualizar(String tabelas, ContentValues valores, String where){
         return 0;

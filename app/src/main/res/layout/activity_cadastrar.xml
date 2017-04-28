@@ -71,7 +71,7 @@
                     android:text="Senha:" />
 
                 <EditText
-                    android:id="@+id/editText4"
+                    android:id="@+id/edtSenhaCadastro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -131,7 +131,8 @@
                         android:layout_height="67dp"
                         android:background="@drawable/buttons_border"
                         android:layout_gravity="center"
-                        android:text="Cadastrar"/>
+                        android:text="Cadastrar"
+                        android:onClick="cadastrar"/>
 
                 </android.support.v7.widget.LinearLayoutCompat>
 
