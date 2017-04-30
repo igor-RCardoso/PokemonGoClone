@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.trabalhopratico.grupo.pokemongoclone.R;
+import com.trabalhopratico.grupo.pokemongoclone.model.ControladoraFachadaSingleton;
+import com.trabalhopratico.grupo.pokemongoclone.model.Usuario;
 import com.trabalhopratico.grupo.pokemongoclone.util.BancoDadosSingleton;
 import com.trabalhopratico.grupo.pokemongoclone.util.MyApp;
 
@@ -21,10 +23,12 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         boolean con = VerificaConexao(getBaseContext());
-        Log.i("PRE_VERIFICACOES", "verificou conexao");
 
-        //select * from usuario where temSessao == "S"
-        VerificaSessao(BancoDadosSingleton.getInstance().buscar("usuario", new String[]{"*"}, "temSessao = 'S'", ""), this);
+        Log.i("PRE_VERIFICACOES", "verificou conexao");
+        if(!ControladoraFachadaSingleton.getOurInstance().temSessao()){
+            Intent it = new Intent(this, LoginActivity.class);
+            startActivity(it);
+        }
 
     }
 
@@ -41,11 +45,4 @@ public class SplashActivity extends Activity {
         return conectado;
     }
 
-    protected void VerificaSessao(Cursor c, Context _context){
-        if(c.getCount() == 0) {
-            Intent it = new Intent(_context, LoginActivity.class);
-            Log.i("PRE_VERIFICACOES", c.getCount() + "");
-            _context.startActivity(it);
-        }
-    }
 }

@@ -1,5 +1,12 @@
 package com.trabalhopratico.grupo.pokemongoclone.model;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.util.Log;
+
+import com.trabalhopratico.grupo.pokemongoclone.util.BancoDadosSingleton;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +14,7 @@ import java.util.Map;
  * Created by usuario on 18/04/2017.
  */
 
-class ControladoraFachadaSingleton {
+public final class ControladoraFachadaSingleton implements Serializable{
     private Usuario user;
    // private Map<cate> pokemons;
     private Aparecimento aparecimentos[] = new Aparecimento[10];
@@ -27,7 +34,17 @@ class ControladoraFachadaSingleton {
     }
 
     private void daoUsuario(){
-
+        String colunas[] = new String []{"login", "senha", "nome", "sexo", "foto", "dtCadastro"};
+        Cursor c = BancoDadosSingleton.getInstance().buscar("usuario", colunas, "temSessao == 'S'", "");
+        while(c.moveToNext()) {
+            int login = c.getColumnIndex("login");
+            user = new Usuario(c.getString(login));
+            user.setNome(c.getString(c.getColumnIndex("nome")));
+            user.setSenha(c.getString(c.getColumnIndex("senha")));
+            user.setFoto(c.getString(c.getColumnIndex("foto")));
+            user.setDtCadastro(c.getString(c.getColumnIndex("dtCadastro")));
+            user.setSexo(c.getString(c.getColumnIndex("sexo")));
+        }
     }
 
     static ControladoraFachadaSingleton getInstance() {
@@ -38,25 +55,15 @@ class ControladoraFachadaSingleton {
         return user;
     }
 
-    public void setUser(Usuario user) {
-        this.user = user;
-    }
 
     public Aparecimento[] getAparecimentos() {
         return aparecimentos;
-    }
-
-    public void setAparecimentos(Aparecimento[] aparecimentos) {
-        this.aparecimentos = aparecimentos;
     }
 
     public List<Tipo> getTiposPokemons() {
         return tiposPokemons;
     }
 
-    public void setTiposPokemons(List<Tipo> tiposPokemons) {
-        this.tiposPokemons = tiposPokemons;
-    }
 
     public static ControladoraFachadaSingleton getOurInstance() {
         return ourInstance;
@@ -70,7 +77,31 @@ class ControladoraFachadaSingleton {
         this.sorteouLendario = sorteouLendario;
     }
 
+    public boolean temSessao(){
+        //select * from usuario where temSessao == "S"
+        Cursor c = BancoDadosSingleton.getInstance().buscar("usuario", new String[]{"nome"}, "temSessao = 'S'", "");
+        if(c.getCount() == 1) {
+            daoUsuario();
+            return true;
+        }else
+            return false;
+    }
 
-
+    public boolean loginUser(String login, String senha) {
+        Log.i("LOGIN", "LOGINUSER");
+        String colunas[] = new String[]{"*"};
+        String where = "login = '" + login + "' AND senha = '" + senha +"'";
+        Cursor c = BancoDadosSingleton.getInstance().buscar("usuario", colunas, where, "");
+        Log.i("LOGIN", "Verificou se esta correto");
+        if (c.getCount() == 1) {
+            ContentValues values = new ContentValues();
+            values.put("temSessao", "S");
+            BancoDadosSingleton.getInstance().atualizar("usuario", values, where);
+            Log.i("LOGIN", "Atualizou");
+            daoUsuario();
+            return true;
+        }else
+            return false;
+    }
 
 }

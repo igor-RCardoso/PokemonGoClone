@@ -469,6 +469,8 @@ public final class BancoDadosSingleton {
         return id;
     }
     public int atualizar(String tabelas, ContentValues valores, String where){
+
+
         return 0;
     }
 

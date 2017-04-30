@@ -13,7 +13,7 @@ public class Usuario {
     private String nome;
     private String sexo;
     private String foto;
-    private String idCadastro;
+    private String dtCadastro;
     private Map<Pokemon, List<PokemomCapturado>> pokemons;
 
     protected Usuario(String lg) {
@@ -72,12 +72,12 @@ public class Usuario {
         this.foto = foto;
     }
 
-    public String getIdCadastro() {
-        return idCadastro;
+    public String getDtCadastro() {
+        return dtCadastro;
     }
 
-    public void setIdCadastro(String idCadastro) {
-        this.idCadastro = idCadastro;
+    public void setDtCadastro(String idCadastro) {
+        this.dtCadastro = idCadastro;
     }
 
     public Map<Pokemon, List<PokemomCapturado>> getPokemons() {

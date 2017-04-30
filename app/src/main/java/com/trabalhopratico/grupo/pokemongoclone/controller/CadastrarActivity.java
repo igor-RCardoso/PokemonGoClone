@@ -70,7 +70,7 @@ public class CadastrarActivity extends AppCompatActivity {
 
         BancoDadosSingleton.getInstance().inserir("usuario", _values);
 
-        Log.i("CADASTRAR", "Inserrido");
+        Log.i("CADASTRAR", "Inserido");
 
     }
 }

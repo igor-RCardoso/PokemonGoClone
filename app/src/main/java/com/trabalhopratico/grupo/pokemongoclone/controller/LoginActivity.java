@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.trabalhopratico.grupo.pokemongoclone.R;
+import com.trabalhopratico.grupo.pokemongoclone.model.ControladoraFachadaSingleton;
 
 public class LoginActivity extends Activity {
 
@@ -18,6 +21,15 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.i("Inicializando", "LOGIN ACTIVITY");
         setContentView(R.layout.activity_login);
+    }
+    public void login(View v){
+        Log.i("LOGIN", "Acessou evento");
+        EditText edtLogin = (EditText) findViewById(R.id.edtUserLogin);
+        EditText edtSenha = (EditText) findViewById(R.id.edtSenhaLogin);
+        if(ControladoraFachadaSingleton.getOurInstance().loginUser(edtLogin.getText().toString(), edtSenha.getText().toString()))
+            Log.i("LOGIN", "Feito com sucesso!");
+        else
+            Toast.makeText(getBaseContext(), "Login ou senha inválido", Toast.LENGTH_SHORT).show();
     }
 
     public void cadastrar(View v){
