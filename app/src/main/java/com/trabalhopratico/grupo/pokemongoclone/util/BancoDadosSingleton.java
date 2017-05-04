@@ -475,7 +475,8 @@ public final class BancoDadosSingleton {
     }
 
     public int deletar(String tabelas, String where){
-        return 0;
+        int id = db.delete(tabelas, where, null);
+        return id;
     }
     public Cursor buscar(String tabelas, String[] colunas, String where, String orderBy){
         Cursor c;

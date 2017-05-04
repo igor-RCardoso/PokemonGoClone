@@ -19,16 +19,16 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Log.i("Inicializando", "LOGIN ACTIVITY");
         setContentView(R.layout.activity_login);
     }
     public void login(View v){
         Log.i("LOGIN", "Acessou evento");
         EditText edtLogin = (EditText) findViewById(R.id.edtUserLogin);
         EditText edtSenha = (EditText) findViewById(R.id.edtSenhaLogin);
-        if(ControladoraFachadaSingleton.getOurInstance().loginUser(edtLogin.getText().toString(), edtSenha.getText().toString()))
-            Log.i("LOGIN", "Feito com sucesso!");
-        else
+        if(ControladoraFachadaSingleton.getOurInstance().loginUser(edtLogin.getText().toString(), edtSenha.getText().toString())) {
+            Intent it = new Intent(this, MapActivity.class);
+            startActivity(it);
+        }else
             Toast.makeText(getBaseContext(), "Login ou senha inválido", Toast.LENGTH_SHORT).show();
     }
 

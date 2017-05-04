@@ -46,7 +46,8 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:digits="abcdefghijklmnopqrstuvxzwyABCDEFGHIJKLMNOPQRSTUVXZWY"/>
 
                 <TextView
                     android:id="@+id/textView4"
@@ -61,7 +62,8 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:digits="abcdefghijklmnopqrstuvxzwyABCDEFGHIJKLMNOPQRSTUVXZWY1234567890"/>
 
                 <TextView
                     android:id="@+id/textView5"
@@ -74,9 +76,11 @@
                     android:id="@+id/edtSenhaCadastro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
                     android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:inputType="textPassword" />
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:textColor="@android:color/background_dark"
+                    android:digits="abcdefghijklmnopqrstuvxzwyABCDEFGHIJKLMNOPQRSTUVXZWY1234567890" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -91,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:digits="abcdefghijklmnopqrstuvxzwyABCDEFGHIJKLMNOPQRSTUVXZWY1234567890" />
 
                 <TextView
                     android:id="@+id/textView8"

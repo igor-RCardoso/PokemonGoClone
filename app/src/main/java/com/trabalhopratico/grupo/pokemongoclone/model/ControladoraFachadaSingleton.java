@@ -7,8 +7,12 @@ import android.util.Log;
 import com.trabalhopratico.grupo.pokemongoclone.util.BancoDadosSingleton;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Objects.isNull;
 
 /**
  * Created by usuario on 18/04/2017.
@@ -104,4 +108,28 @@ public final class ControladoraFachadaSingleton implements Serializable{
             return false;
     }
 
+
+    public boolean cadastrarUser(String login, String senha, String nome, String sexo, String foto){
+        ContentValues _values = new ContentValues();
+        _values.put("nome", nome);
+        _values.put("login", login);
+        _values.put("senha", senha);
+        _values.put("temSessao", "S");
+        _values.put("sexo", sexo);
+        _values.put("foto", foto);
+
+        Date dt = new Date();
+        SimpleDateFormat sdt = new SimpleDateFormat("dd/MM/yyyy");
+        _values.put("dtCadastro", sdt.format(dt).toString());
+
+        if(getUser() != null) {
+            String where = "login = " + getUser().getLogin();
+            BancoDadosSingleton.getInstance().deletar("pokemonusuario", where);
+            BancoDadosSingleton.getInstance().deletar("usuario", where);
+        }
+
+        BancoDadosSingleton.getInstance().inserir("usuario", _values);
+        daoUsuario();
+        return true;
+    }
 }
