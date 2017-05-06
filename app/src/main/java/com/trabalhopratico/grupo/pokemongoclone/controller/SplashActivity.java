@@ -6,9 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.MutableShort;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.trabalhopratico.grupo.pokemongoclone.R;
@@ -17,17 +21,23 @@ import com.trabalhopratico.grupo.pokemongoclone.model.Usuario;
 import com.trabalhopratico.grupo.pokemongoclone.util.BancoDadosSingleton;
 import com.trabalhopratico.grupo.pokemongoclone.util.MyApp;
 
+import java.io.IOException;
+
 public class SplashActivity extends Activity {
+    private MediaPlayer tocaMusica;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("CICLO_DE_VIDA", "Splash Criado");
         setContentView(R.layout.activity_splash);
-
-        if(!VerificaConexao(getBaseContext())){
+        WebView webView = (WebView) findViewById(R.id.splash_loader);
+        webView.loadUrl("file:///android_asset/loading.gif");
+        webView.setBackgroundColor(Color.TRANSPARENT);
+        tocaMusica = MediaPlayer.create(this, R.raw.abertura2);
+        if (!VerificaConexao(getBaseContext())) {
             AlertDialog alerta;
-            Log.i("PRE_VERIFICACOES", "SEM CON");
+            Log.i("PRE_VERIFICACOES", "SEM CONEXAO");
             //Cria o gerador do AlertDialog
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             //define o titulo
@@ -47,27 +57,22 @@ public class SplashActivity extends Activity {
         }
         Log.i("PRE_VERIFICACOES", "verificou conexao");
 
-        if(!ControladoraFachadaSingleton.getOurInstance().temSessao()){
+        if (!ControladoraFachadaSingleton.getOurInstance().temSessao()) {
             Intent it = new Intent(this, LoginActivity.class);
             startActivity(it);
-        }else{
+
+        } else {
             Intent it = new Intent(this, MapActivity.class);
             startActivity(it);
         }
-
     }
 
-    public static boolean VerificaConexao(Context _context){
+    public static boolean VerificaConexao(Context _context) {
         boolean conectado;
         ConnectivityManager conectivtyManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (conectivtyManager.getActiveNetworkInfo() != null
+        conectado = conectivtyManager.getActiveNetworkInfo() != null
                 && conectivtyManager.getActiveNetworkInfo().isAvailable()
-                && conectivtyManager.getActiveNetworkInfo().isConnected()) {
-            conectado = true;
-        } else {
-            conectado = false;
-        }
+                && conectivtyManager.getActiveNetworkInfo().isConnected();
         return conectado;
     }
-
 }
