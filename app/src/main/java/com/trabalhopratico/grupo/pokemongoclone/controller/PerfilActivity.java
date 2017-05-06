@@ -21,13 +21,16 @@ public class PerfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
         Intent it = getIntent();
         BancoDadosSingleton bd = BancoDadosSingleton.getInstance();
-        Log.i("PerfilActivity", "BD instanciado");
-        Log.i("PerfilActivity", it.getStringExtra("login"));
-        Cursor c = bd.buscar("usuario", new String[]{"nome", "sexo", "dtCadastro"}, "login='"+it.getStringExtra("login")+"'", null);
-        Log.i("PerfilActivity", "Busca por data de captura realizada");
         TextView nome = (TextView) findViewById(R.id.nome);
         TextView data_de_inicio = (TextView) findViewById(R.id.inicio_da_aventura);
         ImageView imageView = (ImageView) findViewById(R.id.imagem_de_perfil);
+
+        Log.i("PerfilActivity", "BD instanciado");
+        Log.i("PerfilActivity", it.getStringExtra("login"));
+        Log.i("PerfilActivity", "Busca por data de captura realizada");
+
+        Cursor c = bd.buscar("usuario", new String[]{"nome", "sexo", "dtCadastro"}, "login='"+it.getStringExtra("login")+"'", null);
+
         String nome_string = "";
         String data = "";
         String sexo = "homem";
