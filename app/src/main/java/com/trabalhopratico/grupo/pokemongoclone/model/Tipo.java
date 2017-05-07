@@ -9,6 +9,7 @@ public class Tipo {
     private String nome;
 
     public Tipo() {
+
     }
 
     public int getIdTipo() {

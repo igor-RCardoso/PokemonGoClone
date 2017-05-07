@@ -1,5 +1,6 @@
 package com.trabalhopratico.grupo.pokemongoclone.controller;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 import com.trabalhopratico.grupo.pokemongoclone.R;
 import com.trabalhopratico.grupo.pokemongoclone.util.BancoDadosSingleton;
 
-public class PerfilActivity extends AppCompatActivity {
+public class PerfilActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class PerfilActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.imagem_de_perfil);
 
         Log.i("PerfilActivity", "BD instanciado");
-        Log.i("PerfilActivity", it.getStringExtra("login"));
+        //Log.i("PerfilActivity", it.getStringExtra("login"));
         Log.i("PerfilActivity", "Busca por data de captura realizada");
 
         Cursor c = bd.buscar("usuario", new String[]{"nome", "sexo", "dtCadastro"}, "login='"+it.getStringExtra("login")+"'", null);
