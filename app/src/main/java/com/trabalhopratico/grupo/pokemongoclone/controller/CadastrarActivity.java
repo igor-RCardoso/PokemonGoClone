@@ -61,6 +61,7 @@ public class CadastrarActivity extends AppCompatActivity {
         if(ControladoraFachadaSingleton.getOurInstance().cadastrarUser(login, senha, nome,sexo, foto)) {
             Intent it = new Intent(this, MapActivity.class);
             startActivity(it);
+            finish();
         }
     }
 }

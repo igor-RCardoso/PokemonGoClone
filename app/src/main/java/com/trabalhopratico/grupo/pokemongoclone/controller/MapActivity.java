@@ -65,6 +65,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         } else {
             fotoPerfil.setImageResource(R.drawable.female_profile);
         }
+        Log.i("CICLO_DE_VIDA", "onCreate");
 
         //pega o fragment do mapa
         MapFragment mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.fragment));
@@ -101,15 +102,27 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
 
     @Override
     protected void onStart() {
-        super.onStart();
 
+        Log.i("CICLO_DE_VIDA", "onStart");
+        super.onStart();
+        criteria = new Criteria();
         provider = lm.getBestProvider(criteria, true);
         if (provider == null) {
             Log.e("PROVEDOR", "Nenhum provedor encontrado");
         } else {
             Log.i("PROVEDOR", "Provedor utilizado: " + provider);
+            //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //  return;
+            //}
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                //return;
             }
             lm.requestLocationUpdates(provider, TEMPO_REQUISICAO_LATLONG, DISTANCIA_MIN_METROS, this);
         }
@@ -124,10 +137,14 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        Log.i("CICLO_DE_VIDA", "onMap");
         mapa = googleMap;
         mapa.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         LatLng aux;
-        if(playerPosition != null) {
+        if(playerPosition != null && provider != null) {
+            Log.i("PROVEDOR", "minha casa");
+            Log.i("PROVEDOR", playerPosition.getLatitude() + " " + playerPosition.getLongitude());
             aux = new LatLng(playerPosition.getLatitude(),playerPosition.getLongitude());
         } else {
             aux = new LatLng(-20.752946,-42.879097);
@@ -145,8 +162,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
 
     @Override
     public void onLocationChanged(Location location) {
+
+        Log.i("CICLO_DE_VIDA", "onLocation");
         if(location != null) {
-            playerPosition = location;
+            //playerPosition = location;
         }
     }
 
