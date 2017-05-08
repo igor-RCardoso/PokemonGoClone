@@ -17,6 +17,7 @@ public class Usuario {
     private Map<Pokemon, List<PokemomCapturado>> pokemons;
 
     protected Usuario(String lg) {
+        login = lg;
     }
 
     private void preencheCapturas(){

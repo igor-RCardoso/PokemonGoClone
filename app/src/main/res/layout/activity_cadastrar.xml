@@ -112,7 +112,8 @@
                     android:layout_height="wrap_content">
                     <RadioGroup
                         android:layout_width="143dp"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rgSexo">
 
                         <RadioButton
                             android:id="@+id/rdHomem"

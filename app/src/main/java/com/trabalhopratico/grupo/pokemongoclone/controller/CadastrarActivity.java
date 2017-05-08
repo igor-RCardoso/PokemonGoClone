@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.trabalhopratico.grupo.pokemongoclone.R;
@@ -34,8 +35,8 @@ public class CadastrarActivity extends AppCompatActivity {
         EditText edtConfirmaSenha = (EditText) findViewById(R.id.edtConfirmarSenha); String confSenha = edtConfirmaSenha.getText().toString();
         RadioButton rdHomem = (RadioButton) findViewById(R.id.rdHomem);
         RadioButton rdMulher = (RadioButton) findViewById(R.id.rdMulher);
-        String sexo;
-        String foto;
+        String sexo = "";
+        String foto = "";
 
         if(!senha.equals(confSenha)){
             Toast.makeText(getBaseContext(), "A confirmação de senha deve ser igual a senha", Toast.LENGTH_SHORT).show();
@@ -49,13 +50,19 @@ public class CadastrarActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "Insira uma senha", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(rdHomem.isSelected()) {
-            sexo = "homem";
-            foto = "@drawable/male_profile.png";
-        }else {
-            sexo = "mulher";
-            foto = "@drawable/female_profile.png";
+        Log.i("CADASTRAR", "falta so sexo");
+        RadioGroup rgSexo = (RadioGroup) findViewById(R.id.rgSexo);
+        switch (rgSexo.getCheckedRadioButtonId()) {
+            case R.id.rdHomem:
+                sexo = "homem";
+                foto = "@drawable/male_profile.png";
+                break;
+            case R.id.rdMulher:
+                sexo = "mulher";
+                foto = "@drawable/female_profile.png";
+                break;
         }
+
 
         Log.i("CADASTRAR", "Sobrecarregou variaveis");
         if(ControladoraFachadaSingleton.getOurInstance().cadastrarUser(login, senha, nome,sexo, foto)) {

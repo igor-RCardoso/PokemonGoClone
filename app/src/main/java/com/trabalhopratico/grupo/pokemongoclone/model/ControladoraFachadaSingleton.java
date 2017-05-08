@@ -69,7 +69,7 @@ public final class ControladoraFachadaSingleton implements Serializable{
 
     private void daoUsuario(){
         String colunas[] = new String []{"login", "senha", "nome", "sexo", "foto", "dtCadastro"};
-        Cursor c = BancoDadosSingleton.getInstance().buscar("usuario", colunas, "temSessao == 'S'", "");
+        Cursor c = BancoDadosSingleton.getInstance().buscar("usuario", colunas, "", "");
         List<Pokemon> lC, lI, lR, lL;
         while(c.moveToNext()) {
             int login = c.getColumnIndex("login");
@@ -139,7 +139,6 @@ public final class ControladoraFachadaSingleton implements Serializable{
             return false;
     }
 
-
     public boolean cadastrarUser(String login, String senha, String nome, String sexo, String foto){
         ContentValues _values = new ContentValues();
         _values.put("nome", nome);
@@ -152,10 +151,11 @@ public final class ControladoraFachadaSingleton implements Serializable{
         Date dt = new Date();
         SimpleDateFormat sdt = new SimpleDateFormat("dd/MM/yyyy");
         _values.put("dtCadastro", sdt.format(dt).toString());
-
-        if(getUser() != null) {
-            String where = "login = " + getUser().getLogin();
+        daoUsuario();
+        if(getUser() != null){
+            String where = "login = '" + getUser().getLogin() + "'";
             BancoDadosSingleton.getInstance().deletar("pokemonusuario", where);
+            Log.i("BANCO_DADOS", "esvaziou bd");
             BancoDadosSingleton.getInstance().deletar("usuario", where);
         }
 
@@ -243,6 +243,7 @@ public final class ControladoraFachadaSingleton implements Serializable{
     }
 
     public boolean logoutUser(){
+        Log.i("BANCO_DADOS", user.getLogin() + " será alterado");
         String where = "login = '" + user.getLogin() + "'";
         ContentValues values = new ContentValues();
         values.put("temSessao", "N");
