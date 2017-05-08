@@ -469,9 +469,9 @@ public final class BancoDadosSingleton {
         return id;
     }
     public int atualizar(String tabelas, ContentValues valores, String where){
-
-
-        return 0;
+        int count = db.update(tabelas, valores, where, null);
+        Log.i("BANCO_DADOS", "Atualizou [" + count + "] registros");
+        return count;
     }
 
     public int deletar(String tabelas, String where){
