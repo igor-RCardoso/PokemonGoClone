@@ -28,6 +28,7 @@ public class LoginActivity extends Activity {
         if(ControladoraFachadaSingleton.getOurInstance().loginUser(edtLogin.getText().toString(), edtSenha.getText().toString())) {
             Intent it = new Intent(this, MapActivity.class);
             startActivity(it);
+            finish();
         }else
             Toast.makeText(getBaseContext(), "Login ou senha inválido", Toast.LENGTH_SHORT).show();
     }
@@ -35,5 +36,6 @@ public class LoginActivity extends Activity {
     public void cadastrar(View v){
         Intent it = new Intent(this, CadastrarActivity.class);
         startActivity(it);
+        finish();
     }
 }

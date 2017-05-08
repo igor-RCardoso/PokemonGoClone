@@ -60,10 +60,11 @@ public class SplashActivity extends Activity {
         if (!ControladoraFachadaSingleton.getOurInstance().temSessao()) {
             Intent it = new Intent(this, LoginActivity.class);
             startActivity(it);
-
+            finish();
         } else {
             Intent it = new Intent(this, MapActivity.class);
             startActivity(it);
+            finish();
         }
     }
 

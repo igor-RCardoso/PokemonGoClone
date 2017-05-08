@@ -241,4 +241,12 @@ public final class ControladoraFachadaSingleton implements Serializable{
             contAparecimentos++;
         }
     }
+
+    public boolean logoutUser(){
+        String where = "login = '" + user.getLogin() + "'";
+        ContentValues values = new ContentValues();
+        values.put("temSessao", "N");
+        BancoDadosSingleton.getInstance().atualizar("usuario", values, where);
+        return true;
+    }
 }
