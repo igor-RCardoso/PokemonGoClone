@@ -63,6 +63,7 @@ public final class ControladoraFachadaSingleton implements Serializable{
             Pokemon pokemon = new Pokemon(c.getInt(c.getColumnIndex("idPokemon")),c.getString(c.getColumnIndex("nome")),c.getString(c.getColumnIndex("categoria")),c.getInt(c.getColumnIndex("foto")),c.getInt(c.getColumnIndex("icone")),controladorGeral);
             String cat = pokemon.getCategoria();
             pokemons.get(cat).add(pokemon);
+            Log.i("POKEMON", pokemon.getIcone()+"");
         }
     }
 
