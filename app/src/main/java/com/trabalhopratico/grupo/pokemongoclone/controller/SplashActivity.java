@@ -35,6 +35,8 @@ public class SplashActivity extends Activity {
         webView.loadUrl("file:///android_asset/loading.gif");
         webView.setBackgroundColor(Color.TRANSPARENT);
         tocaMusica = MediaPlayer.create(this, R.raw.abertura2);
+        tocaMusica.start();
+
         if (!VerificaConexao(getBaseContext())) {
             AlertDialog alerta;
             Log.i("PRE_VERIFICACOES", "SEM CONEXAO");
@@ -56,18 +58,31 @@ public class SplashActivity extends Activity {
             alerta.show();
         }
         Log.i("PRE_VERIFICACOES", "verificou conexao");
+        tocaMusica.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if (!ControladoraFachadaSingleton.getOurInstance().temSessao()) {
+                    Intent it = new Intent(getBaseContext(), LoginActivity.class);
+                    tocaMusica.release();
+                    startActivity(it);
 
+                } else {
+                    Intent it = new Intent(getBaseContext(), MapActivity.class);
+                    tocaMusica.release();
+                    startActivity(it);
+                }
+                finish();
+            }
+        });
         if (!ControladoraFachadaSingleton.getOurInstance().temSessao()) {
-            Intent it = new Intent(this, LoginActivity.class);
-            startActivity(it);
-            finish();
+           // Intent it = new Intent(this, LoginActivity.class);
+           // startActivity(it);
+
         } else {
-            Intent it = new Intent(this, MapActivity.class);
-            startActivity(it);
-            finish();
+           // Intent it = new Intent(this, MapActivity.class);
+          //  startActivity(it);
         }
     }
-
     public static boolean VerificaConexao(Context _context) {
         boolean conectado;
         ConnectivityManager conectivtyManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -2,6 +2,7 @@ package com.trabalhopratico.grupo.pokemongoclone.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,13 +15,18 @@ import com.trabalhopratico.grupo.pokemongoclone.R;
 import com.trabalhopratico.grupo.pokemongoclone.model.ControladoraFachadaSingleton;
 
 public class LoginActivity extends Activity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+    }
+
     public void login(View v){
         Log.i("LOGIN", "Acessou evento");
         EditText edtLogin = (EditText) findViewById(R.id.edtUserLogin);
@@ -38,4 +44,6 @@ public class LoginActivity extends Activity {
         startActivity(it);
         finish();
     }
+
+
 }

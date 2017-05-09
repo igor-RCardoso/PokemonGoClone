@@ -8,17 +8,47 @@
     android:orientation="vertical"
     android:weightSum="1"
     tools:context="com.trabalhopratico.grupo.pokemongoclone.controller.PerfilActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/toolbar_perfil"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="0.12"
+        android:background="@color/red_my"
+        android:clickable="true"
+        android:weightSum="1">
+
+        <ImageButton
+            android:id="@+id/back_toolbar"
+            android:adjustViewBounds="true"
+            android:layout_width="54dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="40dp"
+            android:scaleType="fitStart"
+            android:background="@color/red_my"
+            android:src="@drawable/ic_action_back"
+            android:onClick="voltar"/>
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/branco"
+            android:text="Perfil do Usuário"
+            android:textSize="30sp"/>
+    </LinearLayout>
     <TextView
         android:id="@+id/nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_horizontal"
-        android:textColor="@android:color/black" />
-
+        android:textColor="@color/preto"
+        android:textSize="30sp" />
     <ImageView
         android:id="@+id/imagem_de_perfil"
         android:layout_width="159dp"
-        android:layout_height="242dp"
+        android:layout_height="222dp"
         android:layout_gravity="center"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -30,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_vertical"
+        android:paddingTop="10sp"
         android:text="Inicio da aventura:"
         android:textColor="@android:color/black"
         android:textStyle="bold" />
@@ -38,6 +69,7 @@
         android:id="@+id/inicio_da_aventura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="10sp"
         android:layout_gravity="center|center_horizontal"
         android:textColor="@android:color/black"/>
 
@@ -46,6 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_vertical"
         android:text="Numero de Capturas:"
+        android:paddingTop="10sp"
         android:textColor="@android:color/black"
         android:textStyle="bold" />
 
@@ -53,17 +86,24 @@
         android:id="@+id/numero_de_capturas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="10sp"
         android:layout_gravity="center|center_vertical"
         android:textColor="@android:color/black" />
 
     <Button
         android:id="@+id/botao_logout"
         style="@android:style/Widget.Button.Inset"
-        android:layout_width="wrap_content"
+        android:layout_width="81dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_vertical"
-        android:background="@drawable/buttons_border"
+        android:background="@color/red_my"
+        android:textColor="@color/branco"
         android:onClick="logout"
-        android:text="LOGOUT" />
+        android:text="LOGOUT"
+        android:bottomLeftRadius="10dp"
+        android:bottomRightRadius="10dp"
+        android:topLeftRadius="10dp"
+        android:topRightRadius="10dp"
+        />
 
 </LinearLayout>

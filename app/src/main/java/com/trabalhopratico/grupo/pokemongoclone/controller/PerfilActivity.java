@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -18,42 +19,57 @@ import com.trabalhopratico.grupo.pokemongoclone.model.Usuario;
 import com.trabalhopratico.grupo.pokemongoclone.util.BancoDadosSingleton;
 
 public class PerfilActivity extends Activity {
-
+    private final ControladoraFachadaSingleton ctrl = ControladoraFachadaSingleton.getOurInstance();
+    private final BancoDadosSingleton bd = BancoDadosSingleton.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
-        Intent it = getIntent();
-        BancoDadosSingleton bd = BancoDadosSingleton.getInstance();
+        Usuario usuario = ctrl.getUser();
         TextView nome = (TextView) findViewById(R.id.nome);
         TextView data_de_inicio = (TextView) findViewById(R.id.inicio_da_aventura);
         ImageView imageView = (ImageView) findViewById(R.id.imagem_de_perfil);
-
-        Log.i("PerfilActivity", "BD instanciado");
-        //Log.i("PerfilActivity", it.getStringExtra("login"));
-        Log.i("PerfilActivity", "Busca por data de captura realizada");
-
-
-        Drawable drawable;
-        Usuario user = ControladoraFachadaSingleton.getOurInstance().getUser();
-        data_de_inicio.setText(user.getDtCadastro() + "");
-
-        if(user.getSexo().equals("mulher")) drawable = getResources().getDrawable(R.drawable.female_grande);
-        else drawable = getResources().getDrawable(R.drawable.male_grande);
-        imageView.setImageDrawable(drawable);
-        nome.setText(user.getNome());
-
+        String data = usuario.getDtCadastro();
+        String nome_string = usuario.getNome();
+        String sexo = usuario.getSexo();
+        Log.i("PERFIL", sexo);
+        if(sexo.equals("mulher")) imageView.setImageResource(R.drawable.female_grande);
+        else imageView.setImageResource(R.drawable.male_grande);
+        nome.setText(nome_string);
+        Log.i("PerfilActivity", "data de cadastro setada");
+        data_de_inicio.setText(data);
         Log.i("PerfilActivity", "Iniciando Curso 2" );
-        Cursor c2 = bd.buscar("pokemonusuario", new String[]{"idPokemon"}, "login='"+user.getLogin()+"'",null);
+        //Talvez tenha que mudar isso aqui
+        Cursor c2 = bd.buscar("pokemonusuario", new String[]{"idPokemon"}, "login='"+ctrl.getUser()+"'",null);
         TextView numero_de_capturas = (TextView) findViewById(R.id.numero_de_capturas);
         numero_de_capturas.setText(""+c2.getCount());
         Log.i("PerfilActivity", "Finalzando");
-    }
 
+    }
+    public void voltar(View v){
+        Intent it = new Intent(this, MapActivity.class);
+        it.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(it);
+        finish();
+    }
     public void logout(View v){
         ControladoraFachadaSingleton.getOurInstance().logoutUser();
         Intent it = new Intent(this, LoginActivity.class);
         startActivity(it);
         finish();
     }
+
+    /*@Override
+    public boolean onOptionsItemSelected(MenuItem m){
+        switch (m.getItemId()) {
+            case R.id.back_to_map:
+                Intent it = new Intent(this, LoginActivity.class);
+                startActivity(it);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(m);
+
+        }
+    }*/
 }

@@ -11,6 +11,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -43,6 +44,9 @@ import java.util.List;
 public class MapActivity extends Activity implements OnMapReadyCallback, LocationListener, GoogleMap.OnMarkerClickListener {
 
     Handler handler = new Handler();
+    MediaPlayer mp;
+    Marker marker;
+    private BitmapDescriptor bmp;
     private GoogleMap mapa;
     private Location playerPosition;
     private LatLng aux;
@@ -85,6 +89,8 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
     protected void onCreate(Bundle savedInstanceState) {
         //geral
         super.onCreate(savedInstanceState);
+        mp = MediaPlayer.create(this, R.raw.tema_rota_1);
+        mp.setLooping(true);
         setContentView(R.layout.activity_map);
         Log.i("VERIFICANDO", "TESTE");
         Log.i("VERIFICANDO", ControladoraFachadaSingleton.getOurInstance().getUser().getNome());
@@ -122,10 +128,34 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
             Log.i("LOCATION", "Usando servicos de internet");
             criteria.setAccuracy(Criteria.ACCURACY_COARSE);
         }
+
+        provider = lm.getBestProvider(criteria, true);
+        //provider = LocationManager.GPS_PROVIDER;
+        if (provider != null) {
+            Log.e("PROVEDOR", "Nenhum provedor encontrado");
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            }
+            lm.requestLocationUpdates(provider, TEMPO_REQUISICAO_LATLONG, DISTANCIA_MIN_METROS, this);
+            aux = new LatLng(-20.752946,-42.879097);
+            playerPosition = new Location(provider);
+            playerPosition.setLongitude(aux.longitude);
+            playerPosition.setLatitude(aux.latitude);
+        } else {
+            Log.i("PROVEDOR", "Provedor utilizado: " + provider);
+
+        }
+        if (user.getSexo().equals("homem")){
+            bmp = BitmapDescriptorFactory.fromResource(R.drawable.male);
+        } else {
+            bmp = BitmapDescriptorFactory.fromResource(R.drawable.female);
+        }
     }
+
 
     public void perfil(View v) {
         Intent it = new Intent(this, PerfilActivity.class);
+
         startActivity(it);
     }
 
@@ -142,9 +172,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
     @Override
     protected void onStart() {
         super.onStart();
-
-        provider = lm.getBestProvider(criteria, true);
-        if (provider == null) {
+        mp.start();
+        /*provider = lm.getBestProvider(criteria, true);
+        provider = LocationManager.GPS_PROVIDER;
+        if (provider != null) {
             Log.e("PROVEDOR", "Nenhum provedor encontrado");
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -153,49 +184,55 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         } else {
             Log.i("PROVEDOR", "Provedor utilizado: " + provider);
 
-        }
+        }*/
     }
-
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mp.pause();
+    }
     @Override
     protected void onDestroy() {
         lm.removeUpdates(this);
         Log.w("PROVEDOR","Provedor " + provider + " parado");
         taRodando = false;
+        mp.release();
         super.onDestroy();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.i("999", "99999");
+        if(marker != null) marker.remove();
         mapa = googleMap;
         mapa.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         if(playerPosition != null) {
             aux = new LatLng(playerPosition.getLatitude(),playerPosition.getLongitude());
+            //playerPosition.setLongitude(aux.longitude);
+           // playerPosition.setLatitude(aux.latitude);
         } else {
             aux = new LatLng(-20.752946,-42.879097);
-        }
-        Usuario user = ControladoraFachadaSingleton.getOurInstance().getUser();
-        BitmapDescriptor bmp;
-        if (user.getSexo().equals("homem")){
-            bmp = BitmapDescriptorFactory.fromResource(R.drawable.male);
-        } else {
-            bmp = BitmapDescriptorFactory.fromResource(R.drawable.female);
+            playerPosition = new Location(provider);
+            playerPosition.setLongitude(aux.longitude);
+            playerPosition.setLatitude(aux.latitude);
         }
 
+        Usuario user = ControladoraFachadaSingleton.getOurInstance().getUser();
+        handler.post(sorteador);
         mapa.setIndoorEnabled(true);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mapa.setMyLocationEnabled(true);
         mapa.setOnMarkerClickListener(this);
-        handler.post(sorteador);
 
-        mapa.addMarker(new MarkerOptions().position(aux).title("Voce").icon(bmp));
+        marker = mapa.addMarker(new MarkerOptions().position(aux).title("Voce").icon(bmp));
         mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(aux,18));
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        if(location != null) {
+        /*if(location != null) {
             playerPosition = location;
         }
         ControladoraFachadaSingleton cg = ControladoraFachadaSingleton.getOurInstance();
@@ -206,7 +243,25 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
             bmp = BitmapDescriptorFactory.fromResource(R.drawable.female);
         }
         mapa.addMarker(new MarkerOptions().position(aux).title("Voce").icon(bmp));
-        mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(aux,18));
+        mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(aux,18));*/
+        marker.remove();
+
+        double latitude = location.getLatitude();
+
+        double longitude = location.getLongitude();
+
+        Log.i("COORD", latitude + " "+ longitude );
+
+        LatLng latLng = new LatLng(latitude, longitude);
+        Location newPosition = new Location(provider);
+        playerPosition.setLatitude(latitude);
+        playerPosition.setLongitude(longitude);
+        aux = new LatLng(playerPosition.getLatitude(),playerPosition.getLongitude());
+        marker = mapa.addMarker(new MarkerOptions().position(latLng).icon(bmp));
+
+        mapa.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        mapa.animateCamera(CameraUpdateFactory.zoomTo(18));
     }
 
     @Override
